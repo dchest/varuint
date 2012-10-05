@@ -1,0 +1,38 @@
+Go package varuint implements SQLite4-like variable unsigned integer encoding
+as described in http://www.sqlite.org/src4/doc/trunk/www/varint.wiki.
+
+Unlike varint from encoding/binary package, this encoding uses fewer bytes
+for smaller values, and the number of encoded bytes can be determined by
+looking at the first byte. Varuint also preserves numeric and lexicographical
+ordering.
+
+INSTALLATION
+	
+	$ go get github.com/dchest/varuint 
+
+
+EXAMPLE
+
+	import "github.com/dchest/varuint"
+
+	...
+
+	buf := make([]byte, varuint.MaxUint64Len)
+	n := varuint.PutUint64(buf, 12345)
+	buf = buf[:n]
+	fmt.Printf("% x\n", buf)
+	// Output: f9 27 49
+
+	v := varuint.Uint64(buf)
+	fmt.Println(v)
+	// Output: 12345
+
+
+LICENSE / PUBLIC DOMAIN DEDICATION
+
+Written in 2012 by Dmitry Chestnykh.
+
+To the extent possible under law, the author have dedicated all copyright
+and related and neighboring rights to this software to the public domain
+worldwide. This software is distributed without any warranty.
+http://creativecommons.org/publicdomain/zero/1.0/
