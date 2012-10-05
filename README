@@ -23,7 +23,10 @@ EXAMPLE
 	fmt.Printf("% x\n", buf)
 	// Output: f9 27 49
 
-	v, _ := varuint.Uint64(buf)
+	v, n := varuint.Uint64(buf)
+	if n < 0 {
+		panic("buffer is too small to contain the declared number")
+	}
 	fmt.Println(v)
 	// Output: 12345
 

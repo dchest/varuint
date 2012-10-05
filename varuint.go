@@ -93,10 +93,11 @@ func PutUint64(b []byte, v uint64) int {
 }
 
 // Uint64 returns a decoded uint64 from b and the number of bytes read.
-// If an error occured, returns 0, 0.
+// If the buffer is too small, returns n < 0, where -n is the expected
+// length of buffer.
 func Uint64(b []byte) (v uint64, n int) {
 	if len(b) < 1 {
-		return
+		return 0, -1
 	}
 	b0 := b[0]
 	if b0 <= 240 {
@@ -106,7 +107,7 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 <= 248 {
 		if len(b) < 2 {
-			return
+			return 0, -2
 		}
 		v = uint64(b0-241)*256 + uint64(b[1]) + 240
 		n = 2
@@ -114,7 +115,7 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 <= 249 {
 		if len(b) < 3 {
-			return
+			return 0, -3
 		}
 		v = 2288 + (256 * uint64(b[1])) + uint64(b[2])
 		n = 3
@@ -122,7 +123,7 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 == 250 {
 		if len(b) < 4 {
-			return
+			return 0, -4
 		}
 		v = uint64(b[1])<<16 | uint64(b[2])<<8 | uint64(b[3])
 		n = 4
@@ -130,7 +131,7 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 == 251 {
 		if len(b) < 5 {
-			return
+			return 0, -5
 		}
 		v = uint64(b[1])<<24 | uint64(b[2])<<16 | uint64(b[3])<<8 | uint64(b[4])
 		n = 5
@@ -138,7 +139,7 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 == 252 {
 		if len(b) < 6 {
-			return
+			return 0, -6
 		}
 		v = uint64(b[1])<<32 | uint64(b[2])<<24 | uint64(b[3])<<16 | uint64(b[4])<<8 | uint64(b[5])
 		n = 6
@@ -146,7 +147,7 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 == 253 {
 		if len(b) < 7 {
-			return
+			return 0, -7
 		}
 		v = uint64(b[1])<<40 | uint64(b[2])<<32 | uint64(b[3])<<24 | uint64(b[4])<<16 | uint64(b[5])<<8 | uint64(b[6])
 		n = 7
@@ -154,19 +155,16 @@ func Uint64(b []byte) (v uint64, n int) {
 	}
 	if b0 == 254 {
 		if len(b) < 8 {
-			return
+			return 0, -8
 		}
 		v = uint64(b[1])<<48 | uint64(b[2])<<40 | uint64(b[3])<<32 | uint64(b[4])<<24 | uint64(b[5])<<16 | uint64(b[6])<<8 | uint64(b[7])
 		n = 8
 		return
 	}
-	if b0 == 255 {
-		if len(b) < 9 {
-			return
-		}
-		v = uint64(b[1])<<56 | uint64(b[2])<<48 | uint64(b[3])<<40 | uint64(b[4])<<32 | uint64(b[5])<<24 | uint64(b[6])<<16 | uint64(b[7])<<8 | uint64(b[8])
-		n = 9
-		return
+	if len(b) < 9 {
+		return 0, -9
 	}
+	v = uint64(b[1])<<56 | uint64(b[2])<<48 | uint64(b[3])<<40 | uint64(b[4])<<32 | uint64(b[5])<<24 | uint64(b[6])<<16 | uint64(b[7])<<8 | uint64(b[8])
+	n = 9
 	return
 }

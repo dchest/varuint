@@ -48,6 +48,15 @@ func TestVaruint(t *testing.T) {
 	}
 }
 
+func TestShortBuffer(t *testing.T) {
+	var buf [MaxUint64Len]byte
+	n := PutUint64(buf[:], 1<<32)
+	_, w := Uint64(buf[:n-1])
+	if w != -n {
+		t.Errorf("wrong error result: expected %d, got %d", -n, w)
+	}
+}
+
 func BenchmarkPutUint64(b *testing.B) {
 	buf := make([]byte, MaxUint64Len)
 	b.SetBytes(8)
