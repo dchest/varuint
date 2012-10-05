@@ -24,7 +24,7 @@ EXAMPLE
 	// Output: f9 27 49
 
 	v, n := varuint.Uint64(buf)
-	if n < 0 {
+	if n < 1 {
 		panic("buffer is too small to contain the declared number")
 	}
 	fmt.Println(v)
