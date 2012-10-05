@@ -25,7 +25,7 @@ func PutUint64(b []byte, v uint64) int {
 		return 1
 	}
 	if v <= 2287 {
-		b[0] = byte((v - 240) / 256 + 241)
+		b[0] = byte((v-240)/256 + 241)
 		b[1] = byte((v - 240) % 256)
 		return 2
 	}
