@@ -18,6 +18,7 @@ package varuint
 const MaxUint64Len = 9
 
 // PutUint64 encodes a uint64 into b and returns the number of bytes written.
+// Buffer must have enough space to encode the number.
 func PutUint64(b []byte, v uint64) int {
 	if v <= 240 {
 		b[0] = byte(v)
