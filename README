@@ -23,7 +23,7 @@ EXAMPLE
 	fmt.Printf("% x\n", buf)
 	// Output: f9 27 49
 
-	v := varuint.Uint64(buf)
+	v, _ := varuint.Uint64(buf)
 	fmt.Println(v)
 	// Output: 12345
 
