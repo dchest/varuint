@@ -6,17 +6,6 @@ for smaller values, and the number of encoded bytes can be determined by
 looking at the first byte. Varuint also preserves numeric and lexicographical
 ordering.
 
-Stable version
---------------
-
-A stable version of this package with commercial support is available
-through StableLib: https://stablelib.com/v1/encoding/varuint/
-
-
-Development version
--------------------
-
-
 INSTALLATION
 	
 	$ go get github.com/dchest/varuint 
