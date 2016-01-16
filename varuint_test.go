@@ -7,7 +7,10 @@
 
 package varuint
 
-import "testing"
+import (
+	"bytes"
+	"testing"
+)
 
 func testUint64(t *testing.T, x uint64) {
 	var tmp [MaxUint64Len]byte
@@ -79,6 +82,27 @@ func BenchmarkUint64(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for _, v := range buf {
 			Uint64(v)
+		}
+	}
+}
+
+func TestIssue1Putuint64Shift(t *testing.T) {
+	tests := []struct {
+		val    uint64
+		bytes  int
+		varint []byte
+	}{
+		{2147483648, 5, []byte{0xFB, 0x80, 0x00, 0x00, 0x00}},
+	}
+	for _, test := range tests {
+		tmp := make([]byte, 9)
+		n := PutUint64(tmp, test.val)
+		if n != test.bytes {
+			t.Errorf("got %d; want %d", n, test.bytes)
+			continue
+		}
+		if !bytes.Equal(tmp[0:n], test.varint) {
+			t.Errorf("got %v want %v", tmp[0:n], test.varint)
 		}
 	}
 }

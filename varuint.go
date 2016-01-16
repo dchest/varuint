@@ -42,7 +42,7 @@ func PutUint64(b []byte, v uint64) int {
 		b[3] = byte(v)
 		return 4
 	}
-	if v <= 1<<31-1 {
+	if v <= 1<<32-1 {
 		b[0] = 251
 		b[1] = byte(v >> 24)
 		b[2] = byte(v >> 16)
